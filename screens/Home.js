@@ -15,10 +15,11 @@ const Home = () => {
 
   }, []);
 
+  const ApiKey = "YourApisKey"
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${kota}&appid=6dd1dd336f0a8bcf79cc0e4d049a19f4&units=metric`);
+      const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${kota}&appid=${ApiKey}&units=metric`);
       const data = await response.json();
       console.log(data)
       if (data.cod && data.cod !== 200) {
