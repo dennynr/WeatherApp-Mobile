@@ -2,20 +2,17 @@ import { Box, Input, InputField, Pressable, InputIcon, InputSlot, Heading, Image
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { StatusBar } from 'react-native';
 import { Text } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import Clock from 'react-live-clock';
 const Home = () => {
   const [cuaca, setCuaca] = useState(null);
   const [kota, setKota] = useState('Jakarta');
   const insets = useSafeAreaInsets();
   useEffect(() => {
     fetchData();
+  },[]);
 
-  }, []);
-
-  const ApiKey = "YourApisKey"
+  const ApiKey = 'YourApiKey'
 
   const fetchData = async () => {
     try {
@@ -23,7 +20,7 @@ const Home = () => {
       const data = await response.json();
       console.log(data)
       if (data.cod && data.cod !== 200) {
-        setCuaca(null); // Reset cuaca to null if there's an error
+        setCuaca(null);
       } else {
         setCuaca(data);
       }
@@ -38,7 +35,6 @@ const Home = () => {
     'Haze': require('../assets/weather/haze.png'),
 
   };
-
   return (
     <SafeAreaView style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}>
       <LinearGradient
@@ -62,10 +58,11 @@ const Home = () => {
               </InputSlot>
               <InputField placeholder="Cari Kota Disini" onChangeText={(text) => setKota(text)} onSubmitEditing={fetchData} />
             </Input>
+
           </Box>
 
           {cuaca ? (
-            <Box alignItems='center' marginTop={50} >
+            <Box alignItems='center' marginTop={20} >
               <Image w={100} h={100} alt='cuaca' source={weatherImages[cuaca.weather[0].main]} />
               <Box>
                 <Text style={{ color: 'white', fontSize: 70, fontWeight: 'bold' }}>{cuaca.main.temp}°</Text>
@@ -102,7 +99,42 @@ const Home = () => {
               </Box>
             </Box>
           ) : (
-            <Text>Kota tidak ditemukan</Text>
+            <Box alignItems='center' marginTop={150} >
+              {/* <Image w={100} h={100} alt='cuaca' source={require('../assets/weather/NA.png')} /> */}
+              <Box>
+                <Text style={{ color: 'white', fontSize: 70, fontWeight: 'bold' }}>N/A°</Text>
+              </Box>
+              <Box>
+                <Text style={{ color: 'white', fontSize: 20 }}>N/A</Text>
+              </Box>
+              <Box mt={30}>
+                <Text style={{ color: 'white', fontSize: 35 }}>Kota tidak ditemukan</Text>
+              </Box>
+
+              <Box bgColor='white' w={'100%'} height={130} rounded={20} p={20} mt={200} hardShadow >
+                <Box alignItems='center' flex={1} >
+                  <HStack space='4xl' mt={10}>
+                    <VStack alignItems='center' space='m'>
+                      <Text style={{ fontSize: 20, color: '#6f6f6f' }}>N/A m/s</Text>
+                      <Text style={{ fontSize: 12, color: '#6f6f6f' }}>Angin</Text>
+                    </VStack>
+
+                    <VStack alignItems='center' space='m'>
+                      <Text style={{ fontSize: 20, color: '#6f6f6f' }}>N/A %</Text>
+                      <Text style={{ fontSize: 12, color: '#6f6f6f' }}>Kelembapan</Text>
+                    </VStack>
+                    <VStack alignItems='center' space='m'>
+                      <Text style={{ fontSize: 20, color: '#6f6f6f' }}>N/A °</Text>
+                      <Text style={{ fontSize: 12, color: '#6f6f6f' }}>Puncak</Text>
+                    </VStack>
+                  </HStack>
+                  <Box mt={30}>
+                    <Text style={{ fontSize: 10, color: '#6f6f6f' }}>WeatherApp by DennyDR</Text>
+                  </Box>
+                </Box>
+
+              </Box>
+            </Box>
           )}
         </Box>
         <Box justifyContent='center' alignItems='center' mt={30}>
